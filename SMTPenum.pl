@@ -57,6 +57,7 @@ eval {
 		$s->recv($buffer, 1024);
 		$enum->{'RCPT'}=$buffer;
 		alarm 0;
+		print $FH "Testing: $username\n"
 		print $FH Dumper($enum);
 		foreach my $val (values %$enum) {
 			if ($val =~ /250 \S+/s) {
