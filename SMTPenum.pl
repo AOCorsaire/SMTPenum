@@ -12,6 +12,7 @@ use IO::Handle;
 use IO::Select;
 use IO::Socket::INET;
 use Data::Dumper;
+use Time::Progress; # libtime-progress-perl
 $| = 1;
 
 if ($#ARGV != 1) {
@@ -22,16 +23,19 @@ my $email = 'guest@localhost';
 my $query_timeout = 3;
 my $host = $ARGV[0];
 my $port = $ARGV[1];
-
-my @users;
+my $pbar = new Time::Progress;
+my @validUsers;
 open(FILE, "<usernames") or die "ERROR: Can't open username file: $!\n";
 my @usernames = map {chomp($_);$_}<FILE>;
-
+$pbar->attr( min => 0, max => scalar @usernames);
+my $p = 0;
 eval {
 	local $SIG{ALRM} = sub { die "alarm\n" };
 	alarm $query_timeout;
+	print "[+] SMTPenum Starting\n";
 	foreach my $username (@usernames){
-		print "Testing: $username\n";
+ 		$p++;
+  	  	print $pbar->report("%45b %p\r", $p);
 		my $s = IO::Socket::INET->new(PeerAddr => $host,PeerPort => $port,Proto => 'tcp') or die "Can't connect to $host:$port: $!\n";
 		my $buffer;
 		my $enum = {};
@@ -54,13 +58,14 @@ eval {
 		alarm 0;
 		foreach my $val (values %$enum) {
 			if ($val =~ /250 \S+/s) {
-				push @users, $username;
+				push @validUsers, $username;
 				last;
 			}
 		}	
 	}
 };
 
-foreach (@users){
-	print "Found:$_\n"
+print $pbar->report("\n[+] Done elapsed:%L\n", $p);
+foreach (@validUsers){
+	print "[+] Found:$_\n"
 }
