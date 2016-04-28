@@ -29,7 +29,7 @@ open(FILE, "<usernames") or die "ERROR: Can't open username file: $!\n";
 my @usernames = map {chomp($_);$_}<FILE>;
 $pbar->attr( min => 0, max => scalar @usernames);
 my $p = 0;
-open my $FH, '>>', 'logfile';
+open my $FH, '>', 'logfile';
 eval {
 	local $SIG{ALRM} = sub { die "alarm\n" };
 	alarm $query_timeout;
