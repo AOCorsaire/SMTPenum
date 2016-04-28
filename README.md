@@ -26,8 +26,6 @@ Found: mysql
 ```
 
 ### TODO
-- progress bar
-- log reults to confirm false positives
 - startTLS support
 - AUTH enumeration
 - more SMTP commands
