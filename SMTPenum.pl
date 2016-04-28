@@ -29,6 +29,7 @@ open(FILE, "<usernames") or die "ERROR: Can't open username file: $!\n";
 my @usernames = map {chomp($_);$_}<FILE>;
 $pbar->attr( min => 0, max => scalar @usernames);
 my $p = 0;
+open my $FH, '>>', 'logfile';
 eval {
 	local $SIG{ALRM} = sub { die "alarm\n" };
 	alarm $query_timeout;
@@ -56,6 +57,7 @@ eval {
 		$s->recv($buffer, 1024);
 		$enum->{'RCPT'}=$buffer;
 		alarm 0;
+		print $FH Dumper($enum);
 		foreach my $val (values %$enum) {
 			if ($val =~ /250 \S+/s) {
 				push @validUsers, $username;
@@ -63,6 +65,8 @@ eval {
 			}
 		}	
 	}
+	close $FH;
+
 };
 
 print $pbar->report("\n[+] Done elapsed:%L\n", $p);
