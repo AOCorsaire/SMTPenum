@@ -13,7 +13,7 @@ Small bits of research on how this works, why it works, and what can be done to 
 #### Example
 
 ```sh
-$ ./SMTPenum.pl st88.arena.ne.jp 25
+$ ./SMTPenum.pl localhost 25
 Testing: admin
 Testing: administrator
 Testing: _apt
@@ -26,6 +26,7 @@ Found: mysql
 ```
 
 ### TODO
+- progress bar
 - log reults to confirm false positives
 - startTLS support
 - AUTH enumeration
