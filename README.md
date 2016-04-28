@@ -4,7 +4,7 @@ Enumerate local users via SMTP for underlying service leakage and potentially OS
 
 ## About
 
-Small bits of research on how this works, why it works, and what can be done to avoid this.
+Small bits of research on how this works, why it works, and what can be done to avoid this type of enumeration.
 
 ### Usage
 
@@ -14,15 +14,12 @@ Small bits of research on how this works, why it works, and what can be done to 
 
 ```sh
 $ ./SMTPenum.pl localhost 25
-Testing: admin
-Testing: administrator
-Testing: _apt
-Testing: arpwatch
-Testing: avahi
-...[SNIP]...
-Found: administrator
-Found: tomcat
-Found: mysql
+[+] SMTPenum Starting
+############################################# 100.0%
+[+] Done elapsed:  0:16
+[+] Found:admin
+[+] Found:aws
+[+] Found:bin
 ```
 
 ### TODO
